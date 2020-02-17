@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <article id="post-148" class="post-148 page type-page status-publish hentry">
+      <div class="entry-content">
+        <!-- Mock-up -->
+        <div class="elementor-element-7fb8b7a" style="display: none;">
+          <div id="elementor-tab-content-1331">Dane 2018</div>
+          <div id="elementor-tab-content-1332">Dane 2019</div>
+          <div id="elementor-tab-title-1333">
+            <div id="elementor-tab-content-1333">Prognoza 2020 (wg danych gminnych)</div>
+          </div>
+          <div id="elementor-tab-title-1334">
+            <div id="elementor-tab-content-1334">Prognoza 2020 (wg danych krajowych)</div>
+          </div>
+        </div>
+        <!-- Enf of Mock-up -->
+        <!-- Code Embed v2.3.2 -->
+        <script type="text/javascript">
+          let newel;
+
+          // identyfikatory elementów z Elementora Wordpress
+          const elementor = {
+            onOffButton: 'post-148_btn-1',
+            container: 'elementor-element-7fb8b7a',
+            data2018: {
+              id: 'elementor-tab-content-1331',
+              content: ''
+            },
+            data2019: {
+              id: 'elementor-tab-content-1332',
+              content: ''
+            },
+            data2020g: {
+              id: 'elementor-tab-content-1333',
+              content: '',
+              titleId: 'elementor-tab-title-1333'
+            },
+            data2020k: {
+              id: 'elementor-tab-content-1334',
+              content: '',
+              titleId: 'elementor-tab-title-1334'
+            }
+          };
+
+          const addContent = (year, method = '') => {
+            const style = {
+              input: 'width: 8em; text-align: right',
+              unit: 'width: 2em; text-align: center'
+            };
+            return `<table>
+            <tr style="vertical-align: middle">
+              <td>Masa odpadów wytworzonych:</td>
+              <td>
+                <input type="number" id="data${year}${method}-masaWyt" step="0.001" varname="masaWyt" year="${year}" ${
+              year === 2020 ? 'disabled' : ''
+            } style="${style.input}">
+              </td>
+              <td style="${style.unit}">Mg</td>
+            </tr>
+            <tr style="vertical-align: middle">
+              <td>Masa odpadów biodegradowalnych przygotowanych do ponownego użycia i poddanych recyklingowi:</td>
+              <td>
+                <input type="number" id="data${year}${method}-masaBio" step="0.001" varname="masaBio" year="${year}" ${
+              year === 2020 ? 'disabled' : ''
+            } style="${style.input}">
+              </td>
+              <td style="${style.unit}">Mg</td>
+            </tr>
+            <tr style="vertical-align: middle">
+              <td>Masa odpadów materiałowych (tw. szt., szkła, papieru i metalu) przygotowanych do ponownego użycia i poddanych recyklingowi:</td>
+              <td>
+                <input type="number" id="data${year}${method}-masaMat" step="0.001" varname="masaMat" year="${year}" ${
+              year === 2020 ? 'disabled' : ''
+            } style="${style.input}">
+              </td>
+              <td style="${style.unit}">Mg</td>
+            </tr>
+            <tr style="vertical-align: middle">
+              <td>Wskaźnik recyklingu odpadów komunalnych wg zasad z 2020 r.:</td>
+              <td>
+                <input type="text" id="data${year}${method}-wskRec" year="${year}" disabled style="${style.input}">
+              </td>
+              <td style="${style.unit}">%</td>
+            </tr>
+            <tr style="display: ${year === 2020 ? 'table-row' : 'none'}; vertical-align: middle">
+              <td>Wysokość opłaty:</td>
+              <td>
+                <input type="text" id="data${year}${method}-oplata" year="${year}" disabled style="${style.input}">
+              </td>
+              <td style="${style.unit}">zł</td>
+            </tr>
+          </table>`;
+          };
+
+          elementor.data2018.content = addContent(2018);
+          newel = document.createElement('div');
+          newel.style.display = 'block';
+          newel.innerHTML = elementor.data2018.content;
+          document.getElementById(elementor.data2018.id).appendChild(newel);
+
+          elementor.data2019.content = addContent(2019);
+          newel = document.createElement('div');
+          newel.style.display = 'block';
+          newel.innerHTML = elementor.data2019.content;
+          document.getElementById(elementor.data2019.id).appendChild(newel);
+
+          elementor.data2020g.content = addContent(2020, 'g');
+          newel = document.createElement('div');
+          newel.style.display = 'block';
+          newel.innerHTML = elementor.data2020g.content;
+          document.getElementById(elementor.data2020g.id).appendChild(newel);
+
+          elementor.data2020k.content = addContent(2020, 'k');
+          newel = document.createElement('div');
+          newel.style.display = 'block';
+          newel.innerHTML = elementor.data2020k.content;
+          document.getElementById(elementor.data2020k.id).appendChild(newel);
+
+          const dataRecalculate2020 = el => {
+            switch (el.metoda) {
+              case 'g':
+                el.masaWyt = Math.round(_masa2019.masaWyt * (1 + _masa2018.wskMasaWyt) * 1000) / 1000;
+                el.masaBio = Math.round(_masa2019.masaBio * (1 + _masa2018.wskMasaBio) * 1000) / 1000;
+                el.masaMat = Math.round(_masa2019.masaMat * (1 + _masa2018.wskMasaMat) * 1000) / 1000;
+                break;
+              case 'k':
+                if (_masa2019.daneOK) {
+                  el.masaWyt = Math.round(_masa2019.masaWyt * (1 + _masa2019.wskMasaWyt) * 1000) / 1000;
+                  el.masaBio = Math.round(_masa2019.masaBio * (1 + _masa2019.wskMasaBio) * 1000) / 1000;
+                  el.masaMat = Math.round(_masa2019.masaMat * (1 + _masa2019.wskMasaMat) * 1000) / 1000;
+                } else if (_masa2018.daneOK) {
+                  el.masaWyt = Math.round(_masa2018.masaWyt * (1 + _masa2019.wskMasaWyt) ** 2 * 1000) / 1000;
+                  el.masaBio = Math.round(_masa2018.masaBio * (1 + _masa2019.wskMasaBio) ** 2 * 1000) / 1000;
+                  el.masaMat = Math.round(_masa2018.masaMat * (1 + _masa2019.wskMasaMat) ** 2 * 1000) / 1000;
+                }
+                break;
+            }
+            el.wskRec = Math.round(((el.masaMat + el.masaBio) / el.masaWyt) * 100 * 100) / 100;
+            el.oplata = Math.max(0, Math.round(el.stawka * (el.prog - el.wskRec / 100) * el.masaWyt * 100) / 100);
+            return el;
+          };
+
+          const dataVisualize = () => {
+            params.forEach(el => {
+              document.getElementById(`data${el.rok}${el.metoda}-masaWyt`).value = el.masaWyt;
+              document.getElementById(`data${el.rok}${el.metoda}-masaBio`).value = el.masaBio;
+              document.getElementById(`data${el.rok}${el.metoda}-masaMat`).value = el.masaMat;
+
+              if ((el.rok === 2018 && !_masa2018.daneOK) || (el.rok === 2019 && !_masa2019.daneOK)) {
+                document.getElementById(`data${el.rok}${el.metoda}-wskRec`).value = 'błędne dane';
+              } else {
+                document.getElementById(`data${el.rok}${el.metoda}-wskRec`).value = Math.round(el.wskRec * 100) / 100;
+              }
+
+              if (!_masa2018.daneOK) {
+                document.getElementById(`${elementor.data2020g.titleId}`).style.display = 'none';
+                if (!_masa2019.daneOK) {
+                  document.getElementById(`${elementor.data2020k.titleId}`).style.display = 'none';
+                } else {
+                  document.getElementById(`${elementor.data2020k.titleId}`).style.display = '';
+                }
+              } else {
+                document.getElementById(`${elementor.data2020k.titleId}`).style.display = '';
+                if (_masa2019.daneOK) {
+                  document.getElementById(`${elementor.data2020g.titleId}`).style.display = '';
+                } else {
+                  document.getElementById(`${elementor.data2020g.titleId}`).style.display = 'none';
+                }
+              }
+
+              if (el.rok === 2020) document.getElementById(`data${el.rok}${el.metoda}-oplata`).value = el.oplata;
+
+              if ([2018, 2019].includes(el.rok)) {
+                document.getElementById(`data${el.rok}${el.metoda}-masaWyt`).addEventListener('change', e => dataInputsCallback(e));
+                document.getElementById(`data${el.rok}${el.metoda}-masaBio`).addEventListener('change', e => dataInputsCallback(e));
+                document.getElementById(`data${el.rok}${el.metoda}-masaMat`).addEventListener('change', e => dataInputsCallback(e));
+              }
+            });
+          };
+
+          const dataRecalculate = () => {
+            params.forEach(el => {
+              el.wskRec = ((el.masaMat + el.masaBio) / el.masaWyt) * 100;
+              document.getElementById(`data${el.rok}${el.metoda}-wskRec`).value = Math.round(el.wskRec * 100) / 100;
+              switch (el.rok) {
+                case 2018:
+                  if (
+                    _masa2018.masaWyt <= 0 ||
+                    _masa2018.masaBio <= 0 ||
+                    _masa2018.masaMat <= 0 ||
+                    _masa2018.masaWyt < _masa2018.masaBio + _masa2018.masaMat
+                  ) {
+                    _masa2018.daneOK = 0;
+                    el.wskMasaWyt = 0;
+                    el.wskMasaBio = 0;
+                    el.wskMasaMat = 0;
+                  } else {
+                    _masa2018.daneOK = 1;
+                    el.wskMasaWyt = _masa2019.masaWyt / _masa2018.masaWyt - 1;
+                    el.wskMasaBio = _masa2019.masaBio / _masa2018.masaBio - 1;
+                    el.wskMasaMat = _masa2019.masaMat / _masa2018.masaMat - 1;
+                  }
+                  break;
+                case 2019:
+                  if (
+                    _masa2019.masaWyt <= 0 ||
+                    _masa2019.masaBio <= 0 ||
+                    _masa2019.masaMat <= 0 ||
+                    _masa2019.masaWyt < _masa2019.masaBio + _masa2019.masaMat
+                  ) {
+                    _masa2019.daneOK = 0;
+                  } else {
+                    _masa2019.daneOK = 1;
+                  }
+                  el.wskMasaWyt = 0.073;
+                  el.wskMasaBio = 0.2;
+                  el.wskMasaMat = 0.024;
+                  break;
+                case 2020:
+                  dataRecalculate2020(el);
+                  break;
+                default:
+                  break;
+              }
+            });
+            dataVisualize();
+          };
+
+          const params = [
+            { rok: 2018, metoda: '', masaWyt: 10000, masaBio: 1000, masaMat: 3000, daneOK: 1 },
+            { rok: 2019, metoda: '', masaWyt: 12000, masaBio: 1100, masaMat: 3500, daneOK: 1 },
+            { rok: 2020, metoda: 'g', stawka: 270, prog: 0.5 },
+            { rok: 2020, metoda: 'k', stawka: 270, prog: 0.5 }
+          ];
+          const _masa2018 = params.filter(elem => {
+            return elem.rok === 2018;
+          })[0];
+          const _masa2019 = params.filter(elem => {
+            return elem.rok === 2019;
+          })[0];
+
+          dataRecalculate();
+
+          const onOffButton = {
+            state: true
+          };
+
+          const divKalkulatorContainer = {
+            display: 'block',
+            toggle: () => {
+              if (divKalkulatorContainer.display === 'none') {
+                divKalkulatorContainer.display = 'block';
+              } else {
+                divKalkulatorContainer.display = 'none';
+              }
+              return divKalkulatorContainer.display;
+            }
+          };
+
+          const removeListeners = () => {};
+
+          const addListeners = () => {};
+
+          const dataInputsCallback = e => {
+            const { varname, year } = e.target.attributes;
+            params.forEach(el => {
+              if (el.rok === parseInt(year.value)) {
+                if (e.target.value === '') {
+                  e.target.value = 0;
+                }
+                el[varname.value] = parseFloat(e.target.value);
+                dataRecalculate();
+              }
+            });
+          };
+
+          divKalkulatorContainer.element = document.getElementsByClassName(elementor.container)[0];
+          divKalkulatorContainer.element.style.display = divKalkulatorContainer.display;
+        </script>
+        <!-- End of Code Embed output -->
+      </div>
+      <!-- .entry-content -->
+
+      <footer class="entry-footer"></footer>
+      <!-- .entry-footer -->
+    </article>
+  </body>
+</html>
